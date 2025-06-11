@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  cognicare-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cognicare-site
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - cognicare-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cognicare.rule=Host(`cognicare.localhost`)"
+      - "traefik.http.services.cognicare.loadbalancer.server.port=3000"
+
+  # Opcional: Nginx como proxy reverso
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: cognicare-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - cognicare-web
+    restart: unless-stopped
+    networks:
+      - cognicare-network
+
+networks:
+  cognicare-network:
+    driver: bridge
+
+# Volumes para persistência de dados (se necessário)
+volumes:
+  nginx_logs:
+    driver: local
