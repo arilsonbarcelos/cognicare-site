@@ -88,8 +88,7 @@ const Home: React.FC = () => {
                         </h1>
 
                         <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                            A plataforma SaaS completa para clínicas que atendem pacientes neuroatípicos.
-                            Gerencie TEA, TDAH e outras condições com ferramentas especializadas e interface humanizada.
+                            O CogniCare conecta profissionais, famílias e pacientes neuro atípicos em um ambiente seguro e personalizado, facilitando o acompanhamento e evolução de cada caso.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

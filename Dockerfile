@@ -53,15 +53,15 @@ RUN chown -R nextjs:nodejs /usr/share/nginx/html && \
 RUN mkdir -p /var/run/nginx && \
     chown -R nextjs:nodejs /var/run/nginx
 
-# Expor porta 3000
-EXPOSE 3000
+# Expor porta 80
+EXPOSE 80
 
 # Usar usuário não-root
 USER nextjs
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/ || exit 1
+    CMD curl -f http://localhost/ || exit 1
 
 # Comando para iniciar o servidor
 CMD ["nginx", "-g", "daemon off;"]
